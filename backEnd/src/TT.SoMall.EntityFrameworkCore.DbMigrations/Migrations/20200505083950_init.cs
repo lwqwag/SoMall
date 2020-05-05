@@ -194,11 +194,89 @@ namespace TT.SoMall.Migrations
                     TwoFactorEnabled = table.Column<bool>(nullable: false, defaultValue: false),
                     LockoutEnd = table.Column<DateTimeOffset>(nullable: true),
                     LockoutEnabled = table.Column<bool>(nullable: false, defaultValue: false),
-                    AccessFailedCount = table.Column<int>(nullable: false, defaultValue: 0)
+                    AccessFailedCount = table.Column<int>(nullable: false, defaultValue: 0),
+                    HeadImgUrl = table.Column<string>(maxLength: 255, nullable: true),
+                    Nickname = table.Column<string>(maxLength: 64, nullable: true)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_AbpUsers", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Account_RealNameInfos",
+                columns: table => new
+                {
+                    UserId = table.Column<Guid>(nullable: false),
+                    CreationTime = table.Column<DateTime>(nullable: false),
+                    CreatorId = table.Column<Guid>(nullable: true),
+                    LastModificationTime = table.Column<DateTime>(nullable: true),
+                    LastModifierId = table.Column<Guid>(nullable: true),
+                    IsDeleted = table.Column<bool>(nullable: false, defaultValue: false),
+                    DeleterId = table.Column<Guid>(nullable: true),
+                    DeletionTime = table.Column<DateTime>(nullable: true),
+                    RealName = table.Column<string>(maxLength: 64, nullable: false),
+                    Phone = table.Column<string>(maxLength: 64, nullable: false),
+                    PhoneBackup = table.Column<string>(maxLength: 64, nullable: true),
+                    Type = table.Column<byte>(nullable: false),
+                    IDCardFrontUrl = table.Column<string>(maxLength: 64, nullable: false),
+                    IDCardBackUrl = table.Column<string>(maxLength: 64, nullable: false),
+                    IDCardHandUrl = table.Column<string>(maxLength: 64, nullable: false),
+                    BusinessLicenseUrl = table.Column<string>(maxLength: 64, nullable: true),
+                    State = table.Column<byte>(nullable: false),
+                    TenantId = table.Column<Guid>(nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Account_RealNameInfos", x => x.UserId);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "App_Apps",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(nullable: false),
+                    ExtraProperties = table.Column<string>(nullable: true),
+                    ConcurrencyStamp = table.Column<string>(nullable: true),
+                    CreationTime = table.Column<DateTime>(nullable: false),
+                    CreatorId = table.Column<Guid>(nullable: true),
+                    LastModificationTime = table.Column<DateTime>(nullable: true),
+                    LastModifierId = table.Column<Guid>(nullable: true),
+                    IsDeleted = table.Column<bool>(nullable: false, defaultValue: false),
+                    DeleterId = table.Column<Guid>(nullable: true),
+                    DeletionTime = table.Column<DateTime>(nullable: true),
+                    Name = table.Column<string>(maxLength: 64, nullable: false),
+                    ClientName = table.Column<string>(maxLength: 64, nullable: false),
+                    Value = table.Column<string>(nullable: true),
+                    ProviderName = table.Column<string>(maxLength: 2, nullable: true),
+                    ProviderKey = table.Column<string>(maxLength: 64, nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_App_Apps", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Cms.Categories",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(nullable: false),
+                    ExtraProperties = table.Column<string>(nullable: true),
+                    ConcurrencyStamp = table.Column<string>(nullable: true),
+                    CreationTime = table.Column<DateTime>(nullable: false),
+                    CreatorId = table.Column<Guid>(nullable: true),
+                    LastModificationTime = table.Column<DateTime>(nullable: true),
+                    LastModifierId = table.Column<Guid>(nullable: true),
+                    IsDeleted = table.Column<bool>(nullable: false, defaultValue: false),
+                    DeleterId = table.Column<Guid>(nullable: true),
+                    DeletionTime = table.Column<DateTime>(nullable: true),
+                    Name = table.Column<string>(maxLength: 32, nullable: false),
+                    Zan = table.Column<int>(nullable: false),
+                    TenantId = table.Column<Guid>(nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Cms.Categories", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -353,7 +431,63 @@ namespace TT.SoMall.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "SoMall_ProductCategory",
+                name: "Mall_Addresses",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(nullable: false),
+                    CreationTime = table.Column<DateTime>(nullable: false),
+                    CreatorId = table.Column<Guid>(nullable: true),
+                    LastModificationTime = table.Column<DateTime>(nullable: true),
+                    LastModifierId = table.Column<Guid>(nullable: true),
+                    IsDeleted = table.Column<bool>(nullable: false, defaultValue: false),
+                    DeleterId = table.Column<Guid>(nullable: true),
+                    DeletionTime = table.Column<DateTime>(nullable: true),
+                    RealName = table.Column<string>(maxLength: 64, nullable: false),
+                    Phone = table.Column<string>(maxLength: 64, nullable: false),
+                    LocationLable = table.Column<string>(maxLength: 255, nullable: false),
+                    LocationAddress = table.Column<string>(maxLength: 255, nullable: true),
+                    NickName = table.Column<string>(maxLength: 64, nullable: true),
+                    IsDefault = table.Column<bool>(nullable: false),
+                    DatetimeLast = table.Column<DateTime>(nullable: true),
+                    Lat = table.Column<double>(nullable: true),
+                    Lng = table.Column<double>(nullable: true),
+                    LocationType = table.Column<int>(nullable: false),
+                    TenantId = table.Column<Guid>(nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Mall_Addresses", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Mall_Comment",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(nullable: false),
+                    CreationTime = table.Column<DateTime>(nullable: false),
+                    CreatorId = table.Column<Guid>(nullable: true),
+                    LastModificationTime = table.Column<DateTime>(nullable: true),
+                    LastModifierId = table.Column<Guid>(nullable: true),
+                    IsDeleted = table.Column<bool>(nullable: false, defaultValue: false),
+                    DeleterId = table.Column<Guid>(nullable: true),
+                    DeletionTime = table.Column<DateTime>(nullable: true),
+                    BuyerName = table.Column<string>(maxLength: 64, nullable: true),
+                    BuyerAvatar = table.Column<string>(maxLength: 255, nullable: true),
+                    Content = table.Column<string>(maxLength: 1024, nullable: false),
+                    Level = table.Column<int>(nullable: false),
+                    Status = table.Column<int>(nullable: false),
+                    SpuId = table.Column<Guid>(nullable: false),
+                    SkuId = table.Column<Guid>(nullable: true),
+                    TenantId = table.Column<Guid>(nullable: true),
+                    ShopId = table.Column<Guid>(nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Mall_Comment", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Mall_Coupons",
                 columns: table => new
                 {
                     Id = table.Column<Guid>(nullable: false),
@@ -363,14 +497,323 @@ namespace TT.SoMall.Migrations
                     CreatorId = table.Column<Guid>(nullable: true),
                     LastModificationTime = table.Column<DateTime>(nullable: true),
                     LastModifierId = table.Column<Guid>(nullable: true),
-                    Name = table.Column<string>(maxLength: 64, nullable: false),
-                    Code = table.Column<string>(maxLength: 32, nullable: true),
                     IsDeleted = table.Column<bool>(nullable: false, defaultValue: false),
+                    DeleterId = table.Column<Guid>(nullable: true),
+                    DeletionTime = table.Column<DateTime>(nullable: true),
+                    Amount = table.Column<int>(nullable: false),
+                    Name = table.Column<string>(maxLength: 64, nullable: false),
+                    Code = table.Column<string>(maxLength: 32, nullable: false),
+                    Desc = table.Column<string>(maxLength: 255, nullable: false),
+                    Count = table.Column<int>(nullable: false),
+                    TotalCount = table.Column<int>(nullable: false),
+                    UseType = table.Column<int>(nullable: false),
+                    State = table.Column<int>(nullable: false),
+                    DateTimeEnable = table.Column<DateTimeOffset>(nullable: false),
+                    DateTimeStart = table.Column<DateTimeOffset>(nullable: false),
+                    DatetimeEnd = table.Column<DateTimeOffset>(nullable: false),
+                    UseCount = table.Column<int>(nullable: false),
+                    TenantId = table.Column<Guid>(nullable: true),
+                    ShopId = table.Column<Guid>(nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Mall_Coupons", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Mall_MallShops",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(nullable: false),
+                    ExtraProperties = table.Column<string>(nullable: true),
+                    ConcurrencyStamp = table.Column<string>(nullable: true),
+                    Name = table.Column<string>(maxLength: 64, nullable: false),
+                    ShortName = table.Column<string>(maxLength: 16, nullable: false),
+                    LogoImage = table.Column<string>(maxLength: 255, nullable: false),
+                    CoverImage = table.Column<string>(maxLength: 255, nullable: false),
+                    Description = table.Column<string>(nullable: true),
+                    TenantId = table.Column<Guid>(nullable: true),
+                    BussinessHours = table.Column<string>(nullable: true),
+                    Address = table.Column<string>(nullable: true),
+                    Lat = table.Column<double>(nullable: true),
+                    Lng = table.Column<double>(nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Mall_MallShops", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Mall_NewsCategories",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(nullable: false),
+                    ExtraProperties = table.Column<string>(nullable: true),
+                    ConcurrencyStamp = table.Column<string>(nullable: true),
+                    CreationTime = table.Column<DateTime>(nullable: false),
+                    CreatorId = table.Column<Guid>(nullable: true),
+                    LastModificationTime = table.Column<DateTime>(nullable: true),
+                    LastModifierId = table.Column<Guid>(nullable: true),
+                    IsDeleted = table.Column<bool>(nullable: false, defaultValue: false),
+                    DeleterId = table.Column<Guid>(nullable: true),
+                    DeletionTime = table.Column<DateTime>(nullable: true),
+                    Name = table.Column<string>(maxLength: 64, nullable: false),
+                    ShopId = table.Column<Guid>(nullable: true),
                     TenantId = table.Column<Guid>(nullable: true)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_SoMall_ProductCategory", x => x.Id);
+                    table.PrimaryKey("PK_Mall_NewsCategories", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Mall_Partners",
+                columns: table => new
+                {
+                    UserId = table.Column<Guid>(nullable: false),
+                    CreationTime = table.Column<DateTime>(nullable: false),
+                    CreatorId = table.Column<Guid>(nullable: true),
+                    LastModificationTime = table.Column<DateTime>(nullable: true),
+                    LastModifierId = table.Column<Guid>(nullable: true),
+                    IsDeleted = table.Column<bool>(nullable: false, defaultValue: false),
+                    DeleterId = table.Column<Guid>(nullable: true),
+                    DeletionTime = table.Column<DateTime>(nullable: true),
+                    RealName = table.Column<string>(maxLength: 64, nullable: false),
+                    Phone = table.Column<string>(maxLength: 64, nullable: false),
+                    Nickname = table.Column<string>(maxLength: 64, nullable: true),
+                    HeadImageUrl = table.Column<string>(maxLength: 255, nullable: true),
+                    UpdateDate = table.Column<DateTime>(nullable: false),
+                    State = table.Column<int>(nullable: false),
+                    AvblBalance = table.Column<decimal>(nullable: false),
+                    UnavblBalance = table.Column<decimal>(nullable: false),
+                    TotalWithdrawals = table.Column<decimal>(nullable: false),
+                    LastLoginDate = table.Column<DateTime>(nullable: true),
+                    Lat = table.Column<double>(nullable: true),
+                    Lng = table.Column<double>(nullable: true),
+                    LocationLabel = table.Column<string>(maxLength: 255, nullable: true),
+                    LocationAddress = table.Column<string>(maxLength: 255, nullable: true),
+                    Views = table.Column<int>(nullable: false),
+                    TenantId = table.Column<Guid>(nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Mall_Partners", x => x.UserId);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Mall_PayOrders",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(nullable: false),
+                    ExtraProperties = table.Column<string>(nullable: true),
+                    ConcurrencyStamp = table.Column<string>(nullable: true),
+                    CreationTime = table.Column<DateTime>(nullable: false),
+                    CreatorId = table.Column<Guid>(nullable: true),
+                    LastModificationTime = table.Column<DateTime>(nullable: true),
+                    LastModifierId = table.Column<Guid>(nullable: true),
+                    IsDeleted = table.Column<bool>(nullable: false, defaultValue: false),
+                    DeleterId = table.Column<Guid>(nullable: true),
+                    DeletionTime = table.Column<DateTime>(nullable: true),
+                    TotalPrice = table.Column<int>(nullable: false),
+                    Body = table.Column<string>(maxLength: 128, nullable: false),
+                    BillNo = table.Column<string>(maxLength: 48, nullable: false),
+                    OpenId = table.Column<string>(maxLength: 32, nullable: false),
+                    MchId = table.Column<string>(maxLength: 32, nullable: false),
+                    AppName = table.Column<string>(maxLength: 64, nullable: false),
+                    Type = table.Column<int>(nullable: false),
+                    PayType = table.Column<int>(nullable: false),
+                    State = table.Column<int>(nullable: false),
+                    IsSuccessPay = table.Column<bool>(nullable: false),
+                    SuccessPayTime = table.Column<DateTime>(nullable: true),
+                    IsRefund = table.Column<bool>(nullable: false),
+                    RefundTime = table.Column<DateTime>(nullable: true),
+                    RefundComplateTime = table.Column<DateTime>(nullable: true),
+                    RefundPrice = table.Column<int>(nullable: true),
+                    ShareFromUserId = table.Column<Guid>(nullable: true),
+                    PartnerId = table.Column<Guid>(nullable: true),
+                    TenantId = table.Column<Guid>(nullable: true),
+                    ShopId = table.Column<Guid>(nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Mall_PayOrders", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Mall_ProductCategory",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(nullable: false),
+                    ExtraProperties = table.Column<string>(nullable: true),
+                    ConcurrencyStamp = table.Column<string>(nullable: true),
+                    CreationTime = table.Column<DateTime>(nullable: false),
+                    CreatorId = table.Column<Guid>(nullable: true),
+                    LastModificationTime = table.Column<DateTime>(nullable: true),
+                    LastModifierId = table.Column<Guid>(nullable: true),
+                    IsDeleted = table.Column<bool>(nullable: false, defaultValue: false),
+                    DeleterId = table.Column<Guid>(nullable: true),
+                    DeletionTime = table.Column<DateTime>(nullable: true),
+                    Name = table.Column<string>(maxLength: 64, nullable: false),
+                    Code = table.Column<string>(maxLength: 32, nullable: true),
+                    LogoImageUrl = table.Column<string>(maxLength: 255, nullable: true),
+                    RedirectUrl = table.Column<string>(maxLength: 255, nullable: true),
+                    TenantId = table.Column<Guid>(nullable: true),
+                    ShopId = table.Column<Guid>(nullable: true),
+                    Sort = table.Column<int>(nullable: false),
+                    IsGlobal = table.Column<bool>(nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Mall_ProductCategory", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Mall_ProductOrders",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(nullable: false),
+                    ExtraProperties = table.Column<string>(nullable: true),
+                    ConcurrencyStamp = table.Column<string>(nullable: true),
+                    CreationTime = table.Column<DateTime>(nullable: false),
+                    CreatorId = table.Column<Guid>(nullable: true),
+                    LastModificationTime = table.Column<DateTime>(nullable: true),
+                    LastModifierId = table.Column<Guid>(nullable: true),
+                    IsDeleted = table.Column<bool>(nullable: false, defaultValue: false),
+                    DeleterId = table.Column<Guid>(nullable: true),
+                    DeletionTime = table.Column<DateTime>(nullable: true),
+                    PayOrderId = table.Column<Guid>(nullable: true),
+                    BillNo = table.Column<string>(nullable: true),
+                    PricePaidIn = table.Column<decimal>(type: "decimal(18,2)", nullable: true),
+                    PriceOriginal = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
+                    State = table.Column<int>(nullable: false),
+                    Type = table.Column<int>(nullable: false),
+                    PayType = table.Column<int>(nullable: false),
+                    Comment = table.Column<string>(maxLength: 255, nullable: true),
+                    BuyerId = table.Column<Guid>(nullable: true),
+                    AddressId = table.Column<Guid>(nullable: true),
+                    AddressRealName = table.Column<string>(maxLength: 64, nullable: true),
+                    AddressNickName = table.Column<string>(maxLength: 64, nullable: true),
+                    AddressPhone = table.Column<string>(maxLength: 64, nullable: true),
+                    AddressLocationLable = table.Column<string>(maxLength: 255, nullable: true),
+                    AddressLocationAddress = table.Column<string>(maxLength: 255, nullable: true),
+                    ManId = table.Column<Guid>(nullable: true),
+                    PrintCount = table.Column<int>(nullable: false),
+                    TenantId = table.Column<Guid>(nullable: true),
+                    ShopId = table.Column<Guid>(nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Mall_ProductOrders", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Mall_Swipers",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(nullable: false),
+                    ExtraProperties = table.Column<string>(nullable: true),
+                    ConcurrencyStamp = table.Column<string>(nullable: true),
+                    CreationTime = table.Column<DateTime>(nullable: false),
+                    CreatorId = table.Column<Guid>(nullable: true),
+                    LastModificationTime = table.Column<DateTime>(nullable: true),
+                    LastModifierId = table.Column<Guid>(nullable: true),
+                    IsDeleted = table.Column<bool>(nullable: false, defaultValue: false),
+                    DeleterId = table.Column<Guid>(nullable: true),
+                    DeletionTime = table.Column<DateTime>(nullable: true),
+                    GroupName = table.Column<string>(maxLength: 64, nullable: false),
+                    AppName = table.Column<string>(maxLength: 64, nullable: false),
+                    CoverImageUrl = table.Column<string>(maxLength: 255, nullable: false),
+                    Name = table.Column<string>(maxLength: 64, nullable: true),
+                    RedirectUrl = table.Column<string>(maxLength: 255, nullable: true),
+                    State = table.Column<int>(nullable: false, defaultValue: 1),
+                    Sort = table.Column<int>(nullable: false),
+                    ShopId = table.Column<Guid>(nullable: true),
+                    TenantId = table.Column<Guid>(nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Mall_Swipers", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Mall_TenPayNotify",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(nullable: false),
+                    ExtraProperties = table.Column<string>(nullable: true),
+                    ConcurrencyStamp = table.Column<string>(nullable: true),
+                    out_trade_no = table.Column<string>(maxLength: 64, nullable: true),
+                    result_code = table.Column<string>(maxLength: 64, nullable: true),
+                    fee_type = table.Column<string>(maxLength: 64, nullable: true),
+                    return_code = table.Column<string>(maxLength: 64, nullable: true),
+                    total_fee = table.Column<string>(maxLength: 64, nullable: true),
+                    mch_id = table.Column<string>(maxLength: 64, nullable: true),
+                    cash_fee = table.Column<string>(maxLength: 64, nullable: true),
+                    openid = table.Column<string>(maxLength: 64, nullable: true),
+                    transaction_id = table.Column<string>(maxLength: 64, nullable: true),
+                    sign = table.Column<string>(maxLength: 64, nullable: true),
+                    bank_type = table.Column<string>(maxLength: 64, nullable: true),
+                    appid = table.Column<string>(maxLength: 64, nullable: true),
+                    time_end = table.Column<string>(maxLength: 64, nullable: true),
+                    trade_type = table.Column<string>(maxLength: 64, nullable: true),
+                    nonce_str = table.Column<string>(maxLength: 64, nullable: true),
+                    is_subscribe = table.Column<string>(maxLength: 64, nullable: true),
+                    CreationTime = table.Column<DateTime>(nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Mall_TenPayNotify", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Mall_UserCoupons",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(nullable: false),
+                    ExtraProperties = table.Column<string>(nullable: true),
+                    ConcurrencyStamp = table.Column<string>(nullable: true),
+                    CreationTime = table.Column<DateTime>(nullable: false),
+                    CreatorId = table.Column<Guid>(nullable: true),
+                    LastModificationTime = table.Column<DateTime>(nullable: true),
+                    LastModifierId = table.Column<Guid>(nullable: true),
+                    IsDeleted = table.Column<bool>(nullable: false, defaultValue: false),
+                    DeleterId = table.Column<Guid>(nullable: true),
+                    DeletionTime = table.Column<DateTime>(nullable: true),
+                    CouponId = table.Column<Guid>(nullable: false),
+                    OwnerUserId = table.Column<Guid>(nullable: false),
+                    CouponName = table.Column<string>(maxLength: 64, nullable: false),
+                    CouponAmount = table.Column<int>(nullable: false),
+                    PaymentId = table.Column<Guid>(nullable: true),
+                    UsedTime = table.Column<DateTimeOffset>(nullable: true),
+                    UsedOrderId = table.Column<Guid>(nullable: true),
+                    UsedOrderType = table.Column<int>(nullable: true),
+                    ShopId = table.Column<Guid>(nullable: true),
+                    TenantId = table.Column<Guid>(nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Mall_UserCoupons", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Mall_Users",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(nullable: false),
+                    ExtraProperties = table.Column<string>(nullable: true),
+                    ConcurrencyStamp = table.Column<string>(nullable: true),
+                    TenantId = table.Column<Guid>(nullable: true),
+                    UserName = table.Column<string>(maxLength: 256, nullable: false),
+                    Email = table.Column<string>(maxLength: 256, nullable: false),
+                    Name = table.Column<string>(maxLength: 64, nullable: true),
+                    Surname = table.Column<string>(maxLength: 64, nullable: true),
+                    EmailConfirmed = table.Column<bool>(nullable: false, defaultValue: false),
+                    PhoneNumber = table.Column<string>(maxLength: 16, nullable: true),
+                    PhoneNumberConfirmed = table.Column<bool>(nullable: false, defaultValue: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Mall_Users", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -390,8 +833,8 @@ namespace TT.SoMall.Migrations
                     Name = table.Column<string>(maxLength: 64, nullable: false),
                     ShortName = table.Column<string>(maxLength: 16, nullable: false),
                     LogoImage = table.Column<string>(maxLength: 255, nullable: false),
-                    CoverImage = table.Column<string>(maxLength: 255, nullable: false),
                     Description = table.Column<string>(nullable: true),
+                    CoverImage = table.Column<string>(maxLength: 255, nullable: true),
                     TenantId = table.Column<Guid>(nullable: true)
                 },
                 constraints: table =>
@@ -444,6 +887,25 @@ namespace TT.SoMall.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "Visitor_VisitorShops",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(nullable: false),
+                    ExtraProperties = table.Column<string>(nullable: true),
+                    ConcurrencyStamp = table.Column<string>(nullable: true),
+                    Name = table.Column<string>(maxLength: 64, nullable: false),
+                    ShortName = table.Column<string>(maxLength: 16, nullable: false),
+                    LogoImage = table.Column<string>(maxLength: 255, nullable: false),
+                    CoverImage = table.Column<string>(maxLength: 255, nullable: false),
+                    Description = table.Column<string>(nullable: true),
+                    TenantId = table.Column<Guid>(nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Visitor_VisitorShops", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "Weixin_WechatUserinfos",
                 columns: table => new
                 {
@@ -458,7 +920,8 @@ namespace TT.SoMall.Migrations
                     province = table.Column<string>(maxLength: 255, nullable: true),
                     country = table.Column<string>(maxLength: 255, nullable: true),
                     sex = table.Column<int>(nullable: false),
-                    FromClient = table.Column<int>(nullable: false)
+                    FromClient = table.Column<int>(nullable: false),
+                    AppName = table.Column<string>(maxLength: 32, nullable: true)
                 },
                 constraints: table =>
                 {
@@ -891,7 +1354,7 @@ namespace TT.SoMall.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "SoMall_ProductSpu",
+                name: "Mall_NewsContents",
                 columns: table => new
                 {
                     Id = table.Column<Guid>(nullable: false),
@@ -901,20 +1364,142 @@ namespace TT.SoMall.Migrations
                     CreatorId = table.Column<Guid>(nullable: true),
                     LastModificationTime = table.Column<DateTime>(nullable: true),
                     LastModifierId = table.Column<Guid>(nullable: true),
-                    CategoryId = table.Column<Guid>(nullable: false),
-                    Name = table.Column<string>(maxLength: 64, nullable: false),
-                    Code = table.Column<string>(maxLength: 32, nullable: true),
-                    Desc = table.Column<string>(nullable: true),
                     IsDeleted = table.Column<bool>(nullable: false, defaultValue: false),
+                    DeleterId = table.Column<Guid>(nullable: true),
+                    DeletionTime = table.Column<DateTime>(nullable: true),
+                    CategoryId = table.Column<Guid>(nullable: false),
+                    Title = table.Column<string>(maxLength: 64, nullable: false),
+                    CoverImageUrl = table.Column<string>(maxLength: 255, nullable: true),
+                    Content = table.Column<string>(nullable: true),
+                    Status = table.Column<int>(nullable: false),
+                    ViewCount = table.Column<int>(nullable: false),
+                    ShopId = table.Column<Guid>(nullable: true),
                     TenantId = table.Column<Guid>(nullable: true)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_SoMall_ProductSpu", x => x.Id);
+                    table.PrimaryKey("PK_Mall_NewsContents", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_SoMall_ProductSpu_SoMall_ProductCategory_CategoryId",
+                        name: "FK_Mall_NewsContents_Mall_NewsCategories_CategoryId",
                         column: x => x.CategoryId,
-                        principalTable: "SoMall_ProductCategory",
+                        principalTable: "Mall_NewsCategories",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Mall_PartnerDetails",
+                columns: table => new
+                {
+                    PartnerUserId = table.Column<Guid>(nullable: false),
+                    NoticeContent = table.Column<string>(nullable: true),
+                    openid = table.Column<string>(nullable: true),
+                    unionid = table.Column<string>(nullable: true),
+                    weixin = table.Column<string>(nullable: true),
+                    Introducting = table.Column<string>(nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Mall_PartnerDetails", x => x.PartnerUserId);
+                    table.ForeignKey(
+                        name: "FK_Mall_PartnerDetails_Mall_Partners_PartnerUserId",
+                        column: x => x.PartnerUserId,
+                        principalTable: "Mall_Partners",
+                        principalColumn: "UserId",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Mall_AppProductCategory",
+                columns: table => new
+                {
+                    AppName = table.Column<string>(maxLength: 64, nullable: false),
+                    ProductCategoryId = table.Column<Guid>(nullable: false),
+                    CreationTime = table.Column<DateTime>(nullable: false),
+                    CreatorId = table.Column<Guid>(nullable: true),
+                    Sort = table.Column<int>(nullable: false),
+                    TenantId = table.Column<Guid>(nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Mall_AppProductCategory", x => new { x.AppName, x.ProductCategoryId });
+                    table.ForeignKey(
+                        name: "FK_Mall_AppProductCategory_Mall_ProductCategory_ProductCategoryId",
+                        column: x => x.ProductCategoryId,
+                        principalTable: "Mall_ProductCategory",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Mall_ProductSpu",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(nullable: false),
+                    ExtraProperties = table.Column<string>(nullable: true),
+                    ConcurrencyStamp = table.Column<string>(nullable: true),
+                    CreationTime = table.Column<DateTime>(nullable: false),
+                    CreatorId = table.Column<Guid>(nullable: true),
+                    LastModificationTime = table.Column<DateTime>(nullable: true),
+                    LastModifierId = table.Column<Guid>(nullable: true),
+                    IsDeleted = table.Column<bool>(nullable: false, defaultValue: false),
+                    DeleterId = table.Column<Guid>(nullable: true),
+                    DeletionTime = table.Column<DateTime>(nullable: true),
+                    CategoryId = table.Column<Guid>(nullable: false),
+                    TenantId = table.Column<Guid>(nullable: true),
+                    ShopId = table.Column<Guid>(nullable: true),
+                    Name = table.Column<string>(maxLength: 64, nullable: false),
+                    Code = table.Column<string>(maxLength: 32, nullable: false),
+                    DescCommon = table.Column<string>(nullable: true),
+                    PurchaseNotesCommon = table.Column<string>(nullable: true),
+                    DateTimeStart = table.Column<DateTimeOffset>(nullable: true),
+                    DateTimeEnd = table.Column<DateTimeOffset>(nullable: true),
+                    LimitBuyCount = table.Column<int>(nullable: true),
+                    SoldCount = table.Column<int>(nullable: false, defaultValue: 0)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Mall_ProductSpu", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Mall_ProductSpu_Mall_ProductCategory_CategoryId",
+                        column: x => x.CategoryId,
+                        principalTable: "Mall_ProductCategory",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Mall_ProductOrderItems",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(nullable: false),
+                    CreationTime = table.Column<DateTime>(nullable: false),
+                    CreatorId = table.Column<Guid>(nullable: true),
+                    LastModificationTime = table.Column<DateTime>(nullable: true),
+                    LastModifierId = table.Column<Guid>(nullable: true),
+                    IsDeleted = table.Column<bool>(nullable: false, defaultValue: false),
+                    DeleterId = table.Column<Guid>(nullable: true),
+                    DeletionTime = table.Column<DateTime>(nullable: true),
+                    OrderId = table.Column<Guid>(nullable: false),
+                    SpuId = table.Column<Guid>(nullable: false),
+                    SkuId = table.Column<Guid>(nullable: false),
+                    Num = table.Column<double>(nullable: false),
+                    SkuPrice = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
+                    SpuName = table.Column<string>(maxLength: 64, nullable: false),
+                    SkuName = table.Column<string>(maxLength: 64, nullable: false),
+                    SkuUnit = table.Column<string>(maxLength: 16, nullable: true),
+                    SkuCoverImageUrl = table.Column<string>(maxLength: 255, nullable: true),
+                    Discount = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
+                    Comment = table.Column<string>(maxLength: 255, nullable: true),
+                    TenantId = table.Column<Guid>(nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Mall_ProductOrderItems", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Mall_ProductOrderItems_Mall_ProductOrders_OrderId",
+                        column: x => x.OrderId,
+                        principalTable: "Mall_ProductOrders",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
@@ -937,6 +1522,7 @@ namespace TT.SoMall.Migrations
                     IsRequired = table.Column<bool>(nullable: false, defaultValue: true),
                     IsDisable = table.Column<bool>(nullable: false, defaultValue: false),
                     IsMulti = table.Column<bool>(nullable: false, defaultValue: false),
+                    SaveToLocal = table.Column<bool>(nullable: false),
                     SelectionJson = table.Column<string>(nullable: true)
                 },
                 constraints: table =>
@@ -944,6 +1530,46 @@ namespace TT.SoMall.Migrations
                     table.PrimaryKey("PK_Visitor_FormItems", x => new { x.FormId, x.ItemId });
                     table.ForeignKey(
                         name: "FK_Visitor_FormItems_Visitor_Forms_FormId",
+                        column: x => x.FormId,
+                        principalTable: "Visitor_Forms",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Visitor_VisitorLogs",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(nullable: false),
+                    ExtraProperties = table.Column<string>(nullable: true),
+                    ConcurrencyStamp = table.Column<string>(nullable: true),
+                    CreationTime = table.Column<DateTime>(nullable: false),
+                    CreatorId = table.Column<Guid>(nullable: true),
+                    LastModificationTime = table.Column<DateTime>(nullable: true),
+                    LastModifierId = table.Column<Guid>(nullable: true),
+                    IsDeleted = table.Column<bool>(nullable: false, defaultValue: false),
+                    DeleterId = table.Column<Guid>(nullable: true),
+                    DeletionTime = table.Column<DateTime>(nullable: true),
+                    FormJson = table.Column<string>(nullable: true),
+                    CredentialId = table.Column<Guid>(nullable: true),
+                    FormId = table.Column<Guid>(nullable: false),
+                    TenantId = table.Column<Guid>(nullable: true),
+                    ShopId = table.Column<Guid>(nullable: true),
+                    Lat = table.Column<double>(nullable: true),
+                    Lng = table.Column<double>(nullable: true),
+                    LeaveTime = table.Column<DateTimeOffset>(nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Visitor_VisitorLogs", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Visitor_VisitorLogs_Visitor_Credentials_CredentialId",
+                        column: x => x.CredentialId,
+                        principalTable: "Visitor_Credentials",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
+                        name: "FK_Visitor_VisitorLogs_Visitor_Forms_FormId",
                         column: x => x.FormId,
                         principalTable: "Visitor_Forms",
                         principalColumn: "Id",
@@ -969,44 +1595,9 @@ namespace TT.SoMall.Migrations
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_Visitor_ShopForms_SoMall_Shops_ShopId",
+                        name: "FK_Visitor_ShopForms_Visitor_VisitorShops_ShopId",
                         column: x => x.ShopId,
-                        principalTable: "SoMall_Shops",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "Visitor_VisitorLogs",
-                columns: table => new
-                {
-                    Id = table.Column<Guid>(nullable: false),
-                    ExtraProperties = table.Column<string>(nullable: true),
-                    ConcurrencyStamp = table.Column<string>(nullable: true),
-                    CreationTime = table.Column<DateTime>(nullable: false),
-                    CreatorId = table.Column<Guid>(nullable: true),
-                    LastModificationTime = table.Column<DateTime>(nullable: true),
-                    LastModifierId = table.Column<Guid>(nullable: true),
-                    FormId = table.Column<Guid>(nullable: false),
-                    FormJson = table.Column<string>(nullable: true),
-                    CredentialId = table.Column<Guid>(nullable: true),
-                    IsDeleted = table.Column<bool>(nullable: false, defaultValue: false),
-                    TenantId = table.Column<Guid>(nullable: true),
-                    ShopId = table.Column<Guid>(nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Visitor_VisitorLogs", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_Visitor_VisitorLogs_Visitor_Credentials_CredentialId",
-                        column: x => x.CredentialId,
-                        principalTable: "Visitor_Credentials",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
-                    table.ForeignKey(
-                        name: "FK_Visitor_VisitorLogs_Visitor_Forms_FormId",
-                        column: x => x.FormId,
-                        principalTable: "Visitor_Forms",
+                        principalTable: "Visitor_VisitorShops",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
@@ -1054,7 +1645,58 @@ namespace TT.SoMall.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "SoMall_ProductSku",
+                name: "Mall_AppProductSpus",
+                columns: table => new
+                {
+                    AppName = table.Column<string>(maxLength: 64, nullable: false),
+                    ProductSpuId = table.Column<Guid>(nullable: false),
+                    CreationTime = table.Column<DateTime>(nullable: false),
+                    CreatorId = table.Column<Guid>(nullable: true),
+                    TenantId = table.Column<Guid>(nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Mall_AppProductSpus", x => new { x.AppName, x.ProductSpuId });
+                    table.ForeignKey(
+                        name: "FK_Mall_AppProductSpus_Mall_ProductSpu_ProductSpuId",
+                        column: x => x.ProductSpuId,
+                        principalTable: "Mall_ProductSpu",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Mall_PartnerProducts",
+                columns: table => new
+                {
+                    PartnerId = table.Column<Guid>(nullable: false),
+                    SpuId = table.Column<Guid>(nullable: false),
+                    CreationTime = table.Column<DateTime>(nullable: false),
+                    CreatorId = table.Column<Guid>(nullable: true),
+                    Count = table.Column<int>(nullable: false),
+                    Price = table.Column<decimal>(nullable: true),
+                    State = table.Column<int>(nullable: false, defaultValue: 1),
+                    TenantId = table.Column<Guid>(nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Mall_PartnerProducts", x => new { x.PartnerId, x.SpuId });
+                    table.ForeignKey(
+                        name: "FK_Mall_PartnerProducts_Mall_Partners_PartnerId",
+                        column: x => x.PartnerId,
+                        principalTable: "Mall_Partners",
+                        principalColumn: "UserId",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_Mall_PartnerProducts_Mall_ProductSpu_SpuId",
+                        column: x => x.SpuId,
+                        principalTable: "Mall_ProductSpu",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Mall_ProductSku",
                 columns: table => new
                 {
                     Id = table.Column<Guid>(nullable: false),
@@ -1064,20 +1706,34 @@ namespace TT.SoMall.Migrations
                     CreatorId = table.Column<Guid>(nullable: true),
                     LastModificationTime = table.Column<DateTime>(nullable: true),
                     LastModifierId = table.Column<Guid>(nullable: true),
+                    IsDeleted = table.Column<bool>(nullable: false, defaultValue: false),
+                    DeleterId = table.Column<Guid>(nullable: true),
+                    DeletionTime = table.Column<DateTime>(nullable: true),
                     SpuId = table.Column<Guid>(nullable: false),
                     Name = table.Column<string>(maxLength: 64, nullable: false),
                     Code = table.Column<string>(maxLength: 32, nullable: true),
-                    Price = table.Column<decimal>(nullable: false),
-                    IsDeleted = table.Column<bool>(nullable: false, defaultValue: false),
-                    TenantId = table.Column<Guid>(nullable: true)
+                    Price = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
+                    Desc = table.Column<string>(nullable: true),
+                    PurchaseNotes = table.Column<string>(nullable: true),
+                    OriginPrice = table.Column<decimal>(type: "decimal(18,2)", nullable: true),
+                    VipPrice = table.Column<decimal>(type: "decimal(18,2)", nullable: true),
+                    CoverImageUrls = table.Column<string>(nullable: true),
+                    DateTimeStart = table.Column<DateTimeOffset>(nullable: true),
+                    DateTimeEnd = table.Column<DateTimeOffset>(nullable: true),
+                    StockCount = table.Column<int>(nullable: true),
+                    SoldCount = table.Column<int>(nullable: false),
+                    LimitBuyCount = table.Column<int>(nullable: true),
+                    Unit = table.Column<string>(maxLength: 16, nullable: true),
+                    TenantId = table.Column<Guid>(nullable: true),
+                    ShopId = table.Column<Guid>(nullable: true)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_SoMall_ProductSku", x => x.Id);
+                    table.PrimaryKey("PK_Mall_ProductSku", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_SoMall_ProductSku_SoMall_ProductSpu_SpuId",
+                        name: "FK_Mall_ProductSku_Mall_ProductSpu_SpuId",
                         column: x => x.SpuId,
-                        principalTable: "SoMall_ProductSpu",
+                        principalTable: "Mall_ProductSpu",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
@@ -1220,13 +1876,38 @@ namespace TT.SoMall.Migrations
                 columns: new[] { "SubjectId", "ClientId", "Type" });
 
             migrationBuilder.CreateIndex(
-                name: "IX_SoMall_ProductSku_SpuId",
-                table: "SoMall_ProductSku",
+                name: "IX_Mall_AppProductCategory_ProductCategoryId",
+                table: "Mall_AppProductCategory",
+                column: "ProductCategoryId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Mall_AppProductSpus_ProductSpuId",
+                table: "Mall_AppProductSpus",
+                column: "ProductSpuId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Mall_NewsContents_CategoryId",
+                table: "Mall_NewsContents",
+                column: "CategoryId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Mall_PartnerProducts_SpuId",
+                table: "Mall_PartnerProducts",
                 column: "SpuId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_SoMall_ProductSpu_CategoryId",
-                table: "SoMall_ProductSpu",
+                name: "IX_Mall_ProductOrderItems_OrderId",
+                table: "Mall_ProductOrderItems",
+                column: "OrderId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Mall_ProductSku_SpuId",
+                table: "Mall_ProductSku",
+                column: "SpuId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Mall_ProductSpu_CategoryId",
+                table: "Mall_ProductSpu",
                 column: "CategoryId");
 
             migrationBuilder.CreateIndex(
@@ -1287,6 +1968,15 @@ namespace TT.SoMall.Migrations
                 name: "AbpUserTokens");
 
             migrationBuilder.DropTable(
+                name: "Account_RealNameInfos");
+
+            migrationBuilder.DropTable(
+                name: "App_Apps");
+
+            migrationBuilder.DropTable(
+                name: "Cms.Categories");
+
+            migrationBuilder.DropTable(
                 name: "IdentityServerApiClaims");
 
             migrationBuilder.DropTable(
@@ -1332,7 +2022,55 @@ namespace TT.SoMall.Migrations
                 name: "IdentityServerPersistedGrants");
 
             migrationBuilder.DropTable(
-                name: "SoMall_ProductSku");
+                name: "Mall_Addresses");
+
+            migrationBuilder.DropTable(
+                name: "Mall_AppProductCategory");
+
+            migrationBuilder.DropTable(
+                name: "Mall_AppProductSpus");
+
+            migrationBuilder.DropTable(
+                name: "Mall_Comment");
+
+            migrationBuilder.DropTable(
+                name: "Mall_Coupons");
+
+            migrationBuilder.DropTable(
+                name: "Mall_MallShops");
+
+            migrationBuilder.DropTable(
+                name: "Mall_NewsContents");
+
+            migrationBuilder.DropTable(
+                name: "Mall_PartnerDetails");
+
+            migrationBuilder.DropTable(
+                name: "Mall_PartnerProducts");
+
+            migrationBuilder.DropTable(
+                name: "Mall_PayOrders");
+
+            migrationBuilder.DropTable(
+                name: "Mall_ProductOrderItems");
+
+            migrationBuilder.DropTable(
+                name: "Mall_ProductSku");
+
+            migrationBuilder.DropTable(
+                name: "Mall_Swipers");
+
+            migrationBuilder.DropTable(
+                name: "Mall_TenPayNotify");
+
+            migrationBuilder.DropTable(
+                name: "Mall_UserCoupons");
+
+            migrationBuilder.DropTable(
+                name: "Mall_Users");
+
+            migrationBuilder.DropTable(
+                name: "SoMall_Shops");
 
             migrationBuilder.DropTable(
                 name: "Visitor_FormItems");
@@ -1368,10 +2106,19 @@ namespace TT.SoMall.Migrations
                 name: "IdentityServerIdentityResources");
 
             migrationBuilder.DropTable(
-                name: "SoMall_ProductSpu");
+                name: "Mall_NewsCategories");
 
             migrationBuilder.DropTable(
-                name: "SoMall_Shops");
+                name: "Mall_Partners");
+
+            migrationBuilder.DropTable(
+                name: "Mall_ProductOrders");
+
+            migrationBuilder.DropTable(
+                name: "Mall_ProductSpu");
+
+            migrationBuilder.DropTable(
+                name: "Visitor_VisitorShops");
 
             migrationBuilder.DropTable(
                 name: "Visitor_Credentials");
@@ -1386,7 +2133,7 @@ namespace TT.SoMall.Migrations
                 name: "IdentityServerApiResources");
 
             migrationBuilder.DropTable(
-                name: "SoMall_ProductCategory");
+                name: "Mall_ProductCategory");
         }
     }
 }

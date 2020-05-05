@@ -20,6 +20,7 @@ namespace TT.Abp.VisitorManagement.Domain
         protected VisitorShop()
         {
             ExtraProperties = new Dictionary<string, object>();
+            
         }
 
         public VisitorShop(IShopData shop) : base(shop.Id)
