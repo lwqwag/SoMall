@@ -18,7 +18,7 @@
         [(nzPageSize)]="pageingInfo.pageSize" [(nzPageIndex)]="pageingInfo.pageNumber" [nzLoading]="pageingInfo.isTableLoading" (nzPageIndexChange)="refresh()"
         (nzPageSizeChange)="refresh()">
         <thead>
-            <tr >
+            <tr>
                 <!-- <th>Id</th> -->
                 <th class="text-center" width="100px">商户</th>
                 <th class="text-center" width="100px">分类</th>
@@ -63,7 +63,8 @@
                     </table>
                 </td>
                 <td>
-                    <nz-tag [nzColor]="getRndColor(app.appName)" *ngFor="let app of item.appProductSpus"> {{app.appName | translate}}</nz-tag>
+                    <nz-tag [nzColor]="getRndColor(app.appName)" *ngFor="let app of item.appProductSpus" (click)="getQR(item,app.appName)">
+                        {{app.appName | translate}}</nz-tag>
                 </td>
                 <td>
                     <button nz-button nzType="primary" nzShape="circle" [routerLink]="['/mall/spu-edit', item.id]">

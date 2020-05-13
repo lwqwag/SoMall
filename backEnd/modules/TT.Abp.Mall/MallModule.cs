@@ -1,4 +1,6 @@
-﻿using Microsoft.Extensions.DependencyInjection;
+﻿using System.Reflection;
+using MediatR;
+using Microsoft.Extensions.DependencyInjection;
 using TT.Abp.AppManagement;
 using TT.Abp.Mall.Application.Clients;
 using TT.Abp.Mall.Definitions;
@@ -35,21 +37,15 @@ namespace TT.Abp.Mall
 
             Configure<AbpAutoMapperOptions>(options => { options.AddProfile<MallApplicationAutoMapperProfile>(validate: false); });
 
-            Configure<AbpAspNetCoreMvcOptions>(options =>
-            {
+            Configure<AbpAspNetCoreMvcOptions>(options => {
                 options.MinifyGeneratedScript = true;
-                options.ConventionalControllers.Create(typeof(MallModule).Assembly
-                    , opts => { opts.RootPath = "mall"; });
+                options.ConventionalControllers.Create(typeof(MallModule).Assembly, opts => { opts.RootPath = "mall"; });
             });
 
             context.Services.AddTransient<IExternalShopLookupServiceProvider, DefaultShopLookupServiceProvider>();
 
             //创建动态客户端代理
             context.Services.AddHttpClientProxies(typeof(WeixinModule).Assembly);
-
-            // CAP
-            //context.Services.AddTransient<ITenPayNotifyCapSubscriberService, TenPayNotifyCapSubscriberService>();
-
 
             Configure<AbpVirtualFileSystemOptions>(options =>
             {
@@ -59,14 +55,16 @@ namespace TT.Abp.Mall
 
             Configure<AbpLocalizationOptions>(options =>
             {
-                //Define a new localization resource (TestResource)
-                options.Resources
-                    .Add<MallResource>("zh-Hans")
+                options.Resources.Add<MallResource>("zh-Hans")
                     // .AddBaseTypes(typeof(AbpValidationResource))
                     .AddVirtualJson("/Localization/Resources/Mall");
             });
 
             Configure<AbpExceptionLocalizationOptions>(options => { options.MapCodeNamespace("Mall", typeof(MallResource)); });
+
+            // JUST PUT THIS LINE TO USE MediatR Modules
+            context.Services.AddMediatR(typeof(MallModule).GetTypeInfo().Assembly);
+            
         }
     }
 }

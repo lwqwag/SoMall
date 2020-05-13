@@ -153,6 +153,7 @@ namespace TT.SoMall
                 options.AddPolicy(DefaultCorsPolicyName, builder =>
                 {
                     builder
+                        //.AllowAnyOrigin()
                         .WithOrigins(
                             configuration["App:CorsOrigins"]
                                 .Split(",", StringSplitOptions.RemoveEmptyEntries)
@@ -170,6 +171,8 @@ namespace TT.SoMall
 
         public override void OnApplicationInitialization(ApplicationInitializationContext context)
         {
+            
+            
             var app = context.GetApplicationBuilder();
 
             app.UseCorrelationId();
@@ -184,7 +187,10 @@ namespace TT.SoMall
                 app.UseMultiTenancy();
             }
 
-            app.UseAbpRequestLocalization();
+            app.UseAbpRequestLocalization(option =>
+            {
+                option.DefaultRequestCulture = new RequestCulture("zh-Hans");
+            });
 
             app.UseSwagger();
             app.UseSwaggerUI(options => { options.SwaggerEndpoint("/swagger/v1/swagger.json", "SoMall API"); });

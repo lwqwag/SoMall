@@ -3,17 +3,18 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
+using MediatR;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Configuration.Xml;
-using Microsoft.Extensions.Localization;
 using Newtonsoft.Json.Linq;
 using TT.Abp.AppManagement.Apps;
 using TT.Abp.Mall.Application.Products.Dtos;
 using TT.Abp.Mall.Application.Shops;
 using TT.Abp.Mall.Definitions;
 using TT.Abp.Mall.Domain.Products;
+using TT.Abp.Mall.Domain.Shares;
 using TT.Abp.Mall.Domain.Shops;
-using TT.Abp.Mall.Localization;
+using TT.Abp.Mall.Handlers;
 using TT.Extensions;
 using Volo.Abp;
 using Volo.Abp.Application.Dtos;
@@ -30,10 +31,11 @@ namespace TT.Abp.Mall.Application.Products
         private readonly IRepository<ProductSku, Guid> _skuRepository;
         private readonly IRepository<ProductCategory, Guid> _categoryRepository;
         private readonly IRepository<AppProductSpu> _appProductRepository;
+        private readonly IRepository<QrDetail, Guid> _qrDetailRepository;
         private readonly IMallShopRepository _mallShopRepository;
         private readonly IMallShopLookupService _mallShopLookupService;
         private readonly IAppDefinitionManager _appDefinitionManager;
-        private readonly IStringLocalizer<MallResource> _localizer;
+        private readonly IMediator _mediator;
 
         public ProductSpuAppService(
             IGuidGenerator guidGenerator,
@@ -41,11 +43,11 @@ namespace TT.Abp.Mall.Application.Products
             IRepository<ProductSku, Guid> skuRepository,
             IRepository<ProductCategory, Guid> categoryRepository,
             IRepository<AppProductSpu> appProductRepository,
+            IRepository<QrDetail, Guid> qrDetailRepository,
             IMallShopRepository mallShopRepository,
             IMallShopLookupService mallShopLookupService,
             IAppDefinitionManager appDefinitionManager,
-            IStringLocalizer<MallResource> localizer
-        ) : base(repository)
+            IMediator mediator) : base(repository)
         {
             base.GetListPolicyName = MallPermissions.Products.Default;
             base.CreatePolicyName = MallPermissions.Products.Create;
@@ -56,10 +58,11 @@ namespace TT.Abp.Mall.Application.Products
             _skuRepository = skuRepository;
             _categoryRepository = categoryRepository;
             _appProductRepository = appProductRepository;
+            _qrDetailRepository = qrDetailRepository;
             _mallShopRepository = mallShopRepository;
             _mallShopLookupService = mallShopLookupService;
             _appDefinitionManager = appDefinitionManager;
-            _localizer = localizer;
+            _mediator = mediator;
         }
 
         public override async Task<ProductSpuDto> GetAsync(Guid id)
@@ -253,6 +256,14 @@ namespace TT.Abp.Mall.Application.Products
                 .Include(x => x.Skus)
                 .WhereIf(input.ShopId.HasValue, x => x.ShopId == input.ShopId)
                 .WhereIf(input.ShopId.HasValue, x => x.ShopId == input.ShopId);
+        }
+
+
+        [HttpPost]
+        public async Task<QrDetail> GetQr(MallRequestDto input)
+        {
+            var result = await _mediator.Send(new GetQrQuery(input, "mall_product_page"));
+            return result;
         }
     }
 }

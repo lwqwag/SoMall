@@ -11,6 +11,7 @@ using TT.Abp.Mall.Domain.Orders;
 using TT.Abp.Mall.Domain.Partners;
 using TT.Abp.Mall.Domain.Pays;
 using TT.Abp.Mall.Domain.Products;
+using TT.Abp.Mall.Domain.Shares;
 using TT.Abp.Mall.Domain.Shops;
 using TT.Abp.Mall.Domain.Swipers;
 using TT.Abp.Mall.Domain.Users;
@@ -120,7 +121,7 @@ namespace TT.Abp.Mall.EntityFrameworkCore
                 b.Property(x => x.AddressRealName).HasMaxLength(MallConsts.MaxNameLength);
                 b.Property(x => x.AddressNickName).HasMaxLength(MallConsts.MaxNameLength);
                 b.Property(x => x.AddressPhone).HasMaxLength(MallConsts.MaxNameLength);
-                b.Property(x => x.AddressLocationLable).HasMaxLength(MallConsts.MaxOrderComentLength);
+                b.Property(x => x.AddressLocationLabel).HasMaxLength(MallConsts.MaxOrderComentLength);
                 b.Property(x => x.AddressLocationAddress).HasMaxLength(MallConsts.MaxOrderComentLength);
 
                 b.HasMany(x => x.OrderItems).WithOne(x => x.Order);
@@ -150,7 +151,7 @@ namespace TT.Abp.Mall.EntityFrameworkCore
                 b.ConfigureFullAudited();
                 b.Property(x => x.RealName).IsRequired().HasMaxLength(MallConsts.MaxNameLength);
                 b.Property(x => x.Phone).IsRequired().HasMaxLength(MallConsts.MaxNameLength);
-                b.Property(x => x.LocationLable).IsRequired().HasMaxLength(MallConsts.MaxImageLength);
+                b.Property(x => x.LocationLabel).IsRequired().HasMaxLength(MallConsts.MaxImageLength);
                 b.Property(x => x.LocationAddress).HasMaxLength(MallConsts.MaxImageLength);
                 b.Property(x => x.NickName).HasMaxLength(MallConsts.MaxNameLength);
             });
@@ -173,12 +174,12 @@ namespace TT.Abp.Mall.EntityFrameworkCore
 
                 b.ConfigureFullAudited();
                 b.Property(x => x.RealName).IsRequired().HasMaxLength(MallConsts.MaxNameLength);
-                b.Property(x => x.Phone).IsRequired().HasMaxLength(MallConsts.MaxNameLength);
-                b.Property(x => x.Nickname).HasMaxLength(MallConsts.MaxNameLength);
-                b.Property(x => x.HeadImageUrl).HasMaxLength(MallConsts.MaxImageLength);
+                b.Property(x => x.Phone).IsRequired().HasMaxLength(MallConsts.MaxPhoneLength);
+                b.Property(x => x.PhoneBackup).HasMaxLength(MallConsts.MaxPhoneLength);
+                b.Property(x => x.HeadImgUrl).HasMaxLength(MallConsts.MaxImageLength);
 
-                b.Property(x => x.LocationLabel).HasMaxLength(MallConsts.MaxImageLength);
-                b.Property(x => x.LocationAddress).HasMaxLength(MallConsts.MaxImageLength);
+                b.Property(x => x.LocationLabel).HasMaxLength(MallConsts.MaxNameLength);
+                b.Property(x => x.LocationAddress).HasMaxLength(MallConsts.MaxNameLength);
 
                 b.OwnsOne(p => p.Detail,
                     ob => ob.ToTable(MallConsts.DbTablePrefix + "PartnerDetails", MallConsts.DbSchema));
@@ -310,6 +311,24 @@ namespace TT.Abp.Mall.EntityFrameworkCore
                 b.HasOne(x => x.Category).WithMany(x => x.Contents).HasForeignKey(x => x.CategoryId)
                     .OnDelete(DeleteBehavior.Restrict);
             });
+
+            builder.Entity<QrDetail>(b =>
+                {
+                    b.ToTable(MallConsts.DbTablePrefix + "QrDetails", MallConsts.DbSchema);
+                    b.ConfigureCreationAudited();
+                    b.Property(x => x.AppName).IsRequired().HasMaxLength(MallConsts.MaxNameLength);
+                    b.Property(x => x.EventName).IsRequired().HasMaxLength(MallConsts.MaxNameLength);
+                    b.Property(x => x.EventKey).HasMaxLength(MallConsts.MaxImageLength);
+                    b.Property(x => x.Path).HasMaxLength(MallConsts.MaxImageLength);
+                    b.Property(x => x.QrImageUrl).HasMaxLength(MallConsts.MaxImageLength);
+
+                    b.Property(x => x.Params).HasConversion(
+                        v => JsonConvert.SerializeObject(v,
+                            new JsonSerializerSettings {NullValueHandling = NullValueHandling.Ignore}),
+                        v => JsonConvert.DeserializeObject<Dictionary<string, string>>(v,
+                            new JsonSerializerSettings {NullValueHandling = NullValueHandling.Ignore}));
+                }
+            );
         }
     }
 }

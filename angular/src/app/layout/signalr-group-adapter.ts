@@ -4,6 +4,7 @@ import { map, catchError } from 'rxjs/operators';
 import { HttpClient } from '@angular/common/http';
 
 import * as signalR from "@aspnet/signalr";
+import { environment } from '@env/environment';
 
 export class SignalRGroupAdapter extends ChatAdapter implements IChatGroupAdapter {
     public userId: string;
@@ -11,7 +12,7 @@ export class SignalRGroupAdapter extends ChatAdapter implements IChatGroupAdapte
 
 
     private hubConnection: signalR.HubConnection
-    public static serverBaseUrl: string = 'http://127.0.0.1:44340/'; // Set this to 'https://localhost:5001/' if running locally
+    public static serverBaseUrl: string = environment.apis.default.signalR; // Set this to 'https://localhost:5001/' if running locally
 
     constructor(private username: string, private avatar: string, private http: HttpClient) {
         super();
@@ -21,7 +22,11 @@ export class SignalRGroupAdapter extends ChatAdapter implements IChatGroupAdapte
 
     private initializeConnection(): void {
         this.hubConnection = new signalR.HubConnectionBuilder()
-            .withUrl(`${SignalRGroupAdapter.serverBaseUrl}groupchat`)
+            .withUrl(`${SignalRGroupAdapter.serverBaseUrl}/groupchat`,
+                {   // 这里使用WebSockets，不这样写连不上的
+                    skipNegotiation: true,
+                    transport: signalR.HttpTransportType.WebSockets
+                })
             .build();
 
         this.hubConnection
@@ -64,7 +69,7 @@ export class SignalRGroupAdapter extends ChatAdapter implements IChatGroupAdapte
         // List connected users to show in the friends list
         // Sending the userId from the request body as this is just a demo 
         return this.http
-            .post(`${SignalRGroupAdapter.serverBaseUrl}home/listFriends`, { currentUserId: this.userId })
+            .post(`${environment.apis.default.url}/home/listFriends`, { currentUserId: this.userId })
             .pipe(
                 map((res: any) => res),
                 catchError((error: any) => Observable.throw(error.error || 'Server error'))
@@ -74,13 +79,24 @@ export class SignalRGroupAdapter extends ChatAdapter implements IChatGroupAdapte
     getMessageHistory(destinataryId: any): Observable<Message[]> {
         // This could be an API call to your web application that would go to the database
         // and retrieve a N amount of history messages between the users.
+
+        // return this.http
+        //     .get(`${environment.apis.default.url}/home/historyMessage`, {
+        //         params: {
+        //             from: destinataryId,
+        //             to: destinataryId
+        //         }
+        //     })
+        //     .pipe(
+        //         map((res: any) => res),
+        //         catchError((error: any) => Observable.throw(error.error || 'Server error'))
+        //     );
         return of([]);
     }
 
     sendMessage(message: Message): void {
         if (this.hubConnection && this.hubConnection.state == 1) {
             console.log("client on sendMessage", message)
-            // this.hubConnection.send("newMsg", message);
             this.hubConnection.send("sendMsg", JSON.stringify(message));
         }
     }

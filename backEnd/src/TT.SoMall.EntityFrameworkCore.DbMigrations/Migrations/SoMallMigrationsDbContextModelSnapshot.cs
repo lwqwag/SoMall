@@ -79,10 +79,6 @@ namespace TT.SoMall.Migrations
                         .HasColumnType("nvarchar(64)")
                         .HasMaxLength(64);
 
-                    b.Property<string>("PhoneBackup")
-                        .HasColumnType("nvarchar(64)")
-                        .HasMaxLength(64);
-
                     b.Property<string>("RealName")
                         .IsRequired()
                         .HasColumnType("nvarchar(64)")
@@ -286,7 +282,7 @@ namespace TT.SoMall.Migrations
                         .HasColumnType("nvarchar(255)")
                         .HasMaxLength(255);
 
-                    b.Property<string>("LocationLable")
+                    b.Property<string>("LocationLabel")
                         .IsRequired()
                         .HasColumnType("nvarchar(255)")
                         .HasMaxLength(255);
@@ -639,7 +635,7 @@ namespace TT.SoMall.Migrations
                         .HasColumnType("nvarchar(255)")
                         .HasMaxLength(255);
 
-                    b.Property<string>("AddressLocationLable")
+                    b.Property<string>("AddressLocationLabel")
                         .HasColumnType("nvarchar(255)")
                         .HasMaxLength(255);
 
@@ -850,7 +846,7 @@ namespace TT.SoMall.Migrations
                         .HasColumnName("DeletionTime")
                         .HasColumnType("datetime2");
 
-                    b.Property<string>("HeadImageUrl")
+                    b.Property<string>("HeadImgUrl")
                         .HasColumnType("nvarchar(255)")
                         .HasMaxLength(255);
 
@@ -878,21 +874,24 @@ namespace TT.SoMall.Migrations
                         .HasColumnType("float");
 
                     b.Property<string>("LocationAddress")
-                        .HasColumnType("nvarchar(255)")
-                        .HasMaxLength(255);
-
-                    b.Property<string>("LocationLabel")
-                        .HasColumnType("nvarchar(255)")
-                        .HasMaxLength(255);
-
-                    b.Property<string>("Nickname")
                         .HasColumnType("nvarchar(64)")
                         .HasMaxLength(64);
+
+                    b.Property<string>("LocationLabel")
+                        .HasColumnType("nvarchar(64)")
+                        .HasMaxLength(64);
+
+                    b.Property<int>("LocationType")
+                        .HasColumnType("int");
 
                     b.Property<string>("Phone")
                         .IsRequired()
-                        .HasColumnType("nvarchar(64)")
-                        .HasMaxLength(64);
+                        .HasColumnType("nvarchar(16)")
+                        .HasMaxLength(16);
+
+                    b.Property<string>("PhoneBackup")
+                        .HasColumnType("nvarchar(16)")
+                        .HasMaxLength(16);
 
                     b.Property<string>("RealName")
                         .IsRequired()
@@ -910,9 +909,6 @@ namespace TT.SoMall.Migrations
 
                     b.Property<decimal>("UnavblBalance")
                         .HasColumnType("decimal(18,2)");
-
-                    b.Property<DateTime>("UpdateDate")
-                        .HasColumnType("datetime2");
 
                     b.Property<int>("Views")
                         .HasColumnType("int");
@@ -1309,6 +1305,12 @@ namespace TT.SoMall.Migrations
                         .HasColumnType("nvarchar(32)")
                         .HasMaxLength(32);
 
+                    b.Property<bool>("CommissionEnable")
+                        .HasColumnType("bit");
+
+                    b.Property<decimal?>("CommissionPrice")
+                        .HasColumnType("decimal(18,2)");
+
                     b.Property<string>("ConcurrencyStamp")
                         .IsConcurrencyToken()
                         .HasColumnName("ConcurrencyStamp")
@@ -1497,6 +1499,56 @@ namespace TT.SoMall.Migrations
                     b.HasIndex("CategoryId");
 
                     b.ToTable("Mall_ProductSpu");
+                });
+
+            modelBuilder.Entity("TT.Abp.Mall.Domain.Shares.QrDetail", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("AppName")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(64)")
+                        .HasMaxLength(64);
+
+                    b.Property<DateTime>("CreationTime")
+                        .HasColumnName("CreationTime")
+                        .HasColumnType("datetime2");
+
+                    b.Property<Guid?>("CreatorId")
+                        .HasColumnName("CreatorId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("EventKey")
+                        .HasColumnType("nvarchar(255)")
+                        .HasMaxLength(255);
+
+                    b.Property<string>("EventName")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(64)")
+                        .HasMaxLength(64);
+
+                    b.Property<string>("Params")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Path")
+                        .HasColumnType("nvarchar(255)")
+                        .HasMaxLength(255);
+
+                    b.Property<string>("QrImageUrl")
+                        .HasColumnType("nvarchar(255)")
+                        .HasMaxLength(255);
+
+                    b.Property<Guid?>("TenantId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<int>("ViewCount")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Mall_QrDetails");
                 });
 
             modelBuilder.Entity("TT.Abp.Mall.Domain.Shops.MallShop", b =>
@@ -3816,12 +3868,6 @@ namespace TT.SoMall.Migrations
                                 .HasColumnType("nvarchar(max)");
 
                             b1.Property<string>("NoticeContent")
-                                .HasColumnType("nvarchar(max)");
-
-                            b1.Property<string>("openid")
-                                .HasColumnType("nvarchar(max)");
-
-                            b1.Property<string>("unionid")
                                 .HasColumnType("nvarchar(max)");
 
                             b1.Property<string>("weixin")
