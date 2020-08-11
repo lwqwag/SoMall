@@ -55,7 +55,7 @@
                </view>
             </view>
          </view>
-         <view class="loading-text">{{loadingText}}</view>
+         <!-- <view class="loading-text">{{loadingText}}</view> -->
       </view>
 
       <!-- <view class="cu-card" v-for="(x,idx) in shops" :key="idx">
@@ -94,6 +94,7 @@ import api from "@/utils/api";
 @Component
 export default class About extends BaseView {
    async onLoad(options: any) {
+      console.log("options:", options);
       const scene = decodeURIComponent(options.scene);
       if (scene !== "undefined") {
          console.log("scene:", scene);

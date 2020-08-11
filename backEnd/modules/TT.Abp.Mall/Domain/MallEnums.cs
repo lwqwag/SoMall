@@ -9,7 +9,9 @@ namespace TT.Abp.Mall.Domain
             取消 = -1,
             未支付 = 0,
             已支付 = 1,
-            待退款 = 2
+            待退款 = 2,
+            已退款 = 3,
+            部分退款 = 4
         }
 
         public enum PartnerState
@@ -44,7 +46,9 @@ namespace TT.Abp.Mall.Domain
             正在派送 = 2,
             派送完成 = 4,
             完成 = 9,
-            售后 = 11
+            售后 = 11,
+            退款中 = 12,
+            退款完成 = 13
         }
 
         public enum ProductOrderType : int

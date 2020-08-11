@@ -11,6 +11,14 @@ namespace TT.SoMall
 {
     public class Startup
     {
+        public IConfiguration Configuration { get; set; }
+
+
+        public Startup(IConfiguration configuration)
+        {
+            Configuration = configuration;
+        }
+        
         public void ConfigureServices(IServiceCollection services)
         {
             var configuration = services.GetConfiguration();
@@ -43,6 +51,10 @@ namespace TT.SoMall
 
         public void Configure(IApplicationBuilder app)
         {
+            // app.UseElasticApm(Configuration,
+            //     new HttpDiagnosticsSubscriber(), /* Enable tracing of outgoing HTTP requests */
+            //     new EfCoreDiagnosticsSubscriber()); /* Enable tracing of database calls through EF Core*/
+            
             IdentityModelEventSource.ShowPII = true;
 
             app.UseForwardedHeaders(new ForwardedHeadersOptions
@@ -62,7 +74,7 @@ namespace TT.SoMall
                 app2 =>
                 {
                     app2.UseRouting();
-                    app2.UseMvcWithDefaultRouteAndArea();
+                    app2.UseConfiguredEndpoints();
                 }
             );
         }

@@ -7,6 +7,7 @@ using Serilog.Events;
 using Serilog.Sinks.Elasticsearch;
 using Serilog.Exceptions;
 using Winton.Extensions.Configuration.Consul;
+using Elastic.CommonSchema.Serilog;
 
 namespace TT.SoMall
 {
@@ -28,8 +29,9 @@ namespace TT.SoMall
                 .WriteTo.Console()
                 .WriteTo.Elasticsearch(new ElasticsearchSinkOptions(new Uri(elasticsearch))
                 {
-                    AutoRegisterTemplate = true,
-                    AutoRegisterTemplateVersion = AutoRegisterTemplateVersion.ESv7
+                    // AutoRegisterTemplate = true,
+                    // AutoRegisterTemplateVersion = AutoRegisterTemplateVersion.ESv7,
+                    CustomFormatter = new EcsTextFormatter()
                 })
                 .CreateLogger();
 
